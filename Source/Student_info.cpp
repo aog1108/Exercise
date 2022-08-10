@@ -7,67 +7,34 @@ using std::cout; using std::endl;
 
 bool compare(const Student_info& s1, const Student_info& s2)
 {
-	return s1.name < s2.name; 
+	return s1.name() < s2.name();
 }
 
-std::istream& read(std::istream& in, Student_info& s)
+std::istream& read_hw(std::istream& in, std::vector<double>& homework)
 {
-	in >> s.name >> s.midterm >> s.final;
-	read_hw(in, s);
+	if (in) {
+		homework.clear();
+
+		double x;
+
+		while (std::cin >> x) {
+			homework.push_back(x);
+		}
+
+		in.clear();
+	}
 	return in;
 }
 
-std::istream& read_hw(std::istream& is, Student_info& s)
+std::istream& Student_info::read(std::istream& in)
 {
-	if (is) {
-		s.homework.clear();
-		
-		double x;
-		
-		while (std::cin >> x) {
-			s.homework.push_back(x);
-		}
+	in >> n >> midterm >> final;
+	read_hw(in, homework);
 
-		is.clear();
-	}
-	return is;
+	return in;
 }
 
-bool did_all_hw(const Student_info& s)
+double Student_info::grade() const
 {
-	return (std::find(s.homework.begin(), s.homework.end(), 0) == s.homework.end());
-}
-
-double median_analysis(const std::vector<Student_info>& students)
-{
-	std::vector<double> grades;
-	std::transform(students.begin(), students.end(), std::back_inserter(grades), grade_aux);
-	return median(grades);
-}
-
-void write_analysis(std::ostream& out, const std::string& name, double analysis(const std::vector<Student_info>&), const std::vector<Student_info>& did, const std::vector<Student_info>& didnt)
-{
-	out << name << ": median(did) = " << analysis(did) << ", median(didnt) = " << analysis(didnt) << endl;
-}
-
-double average_analysis(const std::vector<Student_info>& students)
-{
-	std::vector<double> grades;
-	std::transform(students.begin(), students.end(), std::back_inserter(grades), average_grade);
-	return median(grades);
-}
-
-double optimistic_median_analysis(const std::vector<Student_info>& students)
-{
-	std::vector<double> grades;
-	std::transform(students.begin(), students.end(), std::back_inserter(grades), optimistic_median);
-	return median(grades);
-}
-
-std::vector<Student_info> extract_fails(std::vector<Student_info>& students)
-{
-	std::vector<Student_info>::iterator iter = std::stable_partition(students.begin(), students.end(), pgrade);
-	std::vector<Student_info> fail(iter, students.end());
-	students.erase(iter, students.end());
-	return fail;
+	return ::grade(midterm, final, homework);
 }

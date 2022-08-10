@@ -11,30 +11,29 @@
 using std::cout; using std::endl;
 
 int main() {
-	std::vector<Student_info> did, didnt;
+	std::vector<Student_info> students;
 
-	Student_info student;
+	Student_info record;
+	std::string::size_type maxlen = 0;
 
-	while (read(std::cin, student)) {
-		if (did_all_hw(student))
-			did.push_back(student);
-		else
-			didnt.push_back(student);
+	while (record.read(std::cin)) {
+		maxlen = std::max(maxlen, record.name().size());
+		students.push_back(record);
 	}
 
-	if (did.empty()) {
-		cout << "No student did all the homework!" << endl;
-		return 1;
+	std::sort(students.begin(), students.end(), compare);
+
+	for (std::vector<Student_info>::size_type i = 0; i != students.size(); ++i) {
+		cout << students[i].name()
+			<< std::string(maxlen + 1 - students[i].name().size(), ' ');
+		try {
+			double final_grade = students[i].grade();
+			std::streamsize prec = cout.precision();
+			cout << std::setprecision(3) << final_grade << std::setprecision(prec) << endl;
+		}
+		catch (std::domain_error e) {
+			cout << e.what() << endl;
+		}
 	}
-
-	if (didnt.empty()) {
-		cout << "Every student did all the homework!" << endl;
-		return 1;
-	}
-
-	write_analysis(cout, "median", median_analysis, did, didnt);
-	write_analysis(cout, "average", average_analysis, did, didnt);
-	write_analysis(cout, "median of homework turned in", optimistic_median_analysis, did, didnt);
-
 	return 0;
 }
