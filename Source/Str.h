@@ -3,9 +3,17 @@
 
 #include "Vec.h"
 #include <iterator>
+#include <iostream>
 
 class Str {
+	friend std::istream& operator>>(std::istream&, Str&);
 public:
+	Str& operator+=(const Str& s)
+	{
+		std::copy(s.data.begin(), s.data.end(), std::back_inserter(data));
+		return *this;
+	}
+
 	typedef Vec<char>::size_type size_type;
 
 	Str() { }
@@ -17,8 +25,18 @@ public:
 		std::copy(b, e, std::back_inserter(data));
 	}
 
+	char& operator[](size_type i) { return data[i]; }
+	const char& operator[](size_type i) const { return data[i]; }
+
+	size_type size() const { return data.size(); }
+
 private:
 	Vec<char> data;
 };
+
+std::istream& operator>>(std::istream&, Str&);
+std::ostream& operator<<(std::ostream&, const Str&);
+
+Str operator+(const Str&, const Str&);
 
 #endif
