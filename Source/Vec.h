@@ -85,7 +85,7 @@ template <class T> void Vec<T>::create(size_type n, const T& val)
 template <class T> void Vec<T>::create(const_iterator i, const_iterator j)
 {
 	data = alloc.allocate(j - i);
-	limit = avail = std::uninitialized_copy()
+	limit = avail = std::uninitialized_copy(i, j, data);
 }
 
 template <class T> void Vec<T>::uncreate()
@@ -93,7 +93,7 @@ template <class T> void Vec<T>::uncreate()
 	if (data) {
 		iterator it = avail;
 		while (it != data)
-			alloc.destory(--it);
+			alloc.destroy(--it);
 
 		alloc.deallocate(data, limit - data);
 	}
