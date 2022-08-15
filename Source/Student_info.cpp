@@ -5,9 +5,50 @@
 
 using std::cout; using std::endl;
 
-bool compare(const Student_info& s1, const Student_info& s2)
+double Core::grade() const
 {
-	return s1.name() < s2.name();
+	return ::grade(midterm, final, homework);
+}
+
+std::istream& Core::read_common(std::istream& in)
+{
+	in >> n >> midterm >> final;
+	return in;
+}
+
+std::istream& Core::read(std::istream& in)
+{
+	read_common(in);
+	read_hw(in, homework);
+	return in;
+}
+
+std::istream& Grad::read(std::istream& in)
+{
+	Core::read_common(in);
+	in >> thesis;
+	read_hw(in, homework);
+	return in;
+}
+
+double Grad::grade() const
+{
+	return std::min(Core::grade(), thesis);
+}
+
+bool compare(const Core& c1, const Core& c2)
+{
+	return c1.name() < c2.name();
+}
+
+bool compare(const Core* cp1, const Core* cp2)
+{
+	return cp1->name() < cp2->name();
+}
+
+bool compare_grades(const Core& c1, const Core& c2)
+{
+	return c1.grade() < c2.grade();
 }
 
 std::istream& read_hw(std::istream& in, std::vector<double>& homework)
@@ -26,15 +67,17 @@ std::istream& read_hw(std::istream& in, std::vector<double>& homework)
 	return in;
 }
 
-std::istream& Student_info::read(std::istream& in)
-{
-	in >> n >> midterm >> final;
-	read_hw(in, homework);
+std::istream& Student_info::read(std::istream& is) {
+	delete cp;
 
-	return in;
-}
+	char ch;
+	is >> ch;
 
-double Student_info::grade() const
-{
-	return ::grade(midterm, final, homework);
+	if (ch == 'U')
+		cp = new Core;
+	else
+		cp = new Grad;
+
+	cp->read(is);
+	return is;
 }
