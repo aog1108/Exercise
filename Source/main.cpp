@@ -21,7 +21,7 @@ int main() {
 		students.push_back(record);
 	}
 
-	std::sort(students.begin(), students.end(), compare);
+	std::sort(students.begin(), students.end(), Student_info::compare);
 
 	for (std::vector<Student_info>::size_type i = 0; i != students.size(); ++i) {
 		cout << students[i].name()
