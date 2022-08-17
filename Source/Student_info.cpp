@@ -2,6 +2,7 @@
 #include "grade.h"
 #include "median.h"
 #include <algorithm>
+#include "Handle.h"
 
 using std::cout; using std::endl;
 
@@ -51,6 +52,11 @@ bool compare_grades(const Core& c1, const Core& c2)
 	return c1.grade() < c2.grade();
 }
 
+bool compare_Core_handles(const Handle<Core>& h1, const Handle<Core>& h2)
+{
+	return h1->name() < h2->name();
+}
+
 std::istream& read_hw(std::istream& in, std::vector<double>& homework)
 {
 	if (in) {
@@ -68,16 +74,13 @@ std::istream& read_hw(std::istream& in, std::vector<double>& homework)
 }
 
 std::istream& Student_info::read(std::istream& is) {
-	delete cp;
-
 	char ch;
 	is >> ch;
 
 	if (ch == 'U')
-		cp = new Core;
+		cp = new Core(is);
 	else
-		cp = new Grad;
+		cp = new Grad(is);
 
-	cp->read(is);
 	return is;
 }

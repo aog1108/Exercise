@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include "Student_info.h"
 #include "grade.h"
+#include "Handle.h"
 
 using std::cout; using std::endl;
 
@@ -23,7 +24,7 @@ int main() {
 
 	std::sort(students.begin(), students.end(), Student_info::compare);
 
-	for (std::vector<Student_info>::size_type i = 0; i != students.size(); ++i) {
+	for (std::vector< Handle<Core> >::size_type i = 0; i != students.size(); ++i) {
 		cout << students[i].name()
 			<< std::string(maxlen + 1 - students[i].name().size(), ' ');
 		try {
