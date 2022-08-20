@@ -2,6 +2,7 @@
 #define GUARD_Handle_H
 
 #include <stdexcept>
+#include "Vec.h"
 
 template <class T> class Handle {
 public:
@@ -59,7 +60,7 @@ public:
 		if (*refptr != 1) {
 			-- *refptr;
 			refptr = new std::size_t(1);
-			p = p ? p->clone() : 0;
+			p = p ? clone(p) : 0;
 		}
 	}
 
@@ -156,6 +157,16 @@ template <class T> Ptr<T>::~Ptr()
 		delete p;
 		delete refptr;
 	}
+}
+
+template <class T> T* clone(const T* tp)
+{
+	return tp->clone();
+}
+
+template<> Vec<char>* clone(const Vec<char>* vp)
+{
+	return new Vec<char>(*vp);
 }
 
 #endif
