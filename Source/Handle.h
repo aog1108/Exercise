@@ -72,13 +72,13 @@ public:
 	~Ptr();
 	
 	operator bool() const { return p; }
-	Ptr& operator*() const {
+	T& operator*() const {
 		if (p)
 			return *p;
 
 		std::runtime_error("unbound Ptr");
 	}
-	Ptr* operator->() const {
+	T* operator->() const {
 		if (p)
 			return p;
 
