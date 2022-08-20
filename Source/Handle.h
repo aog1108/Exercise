@@ -152,7 +152,10 @@ template <class T> Ptr<T>& Ptr<T>::operator=(const Ptr& rhs)
 
 template <class T> Ptr<T>::~Ptr()
 {
-
+	if (-- *refptr == 0) {
+		delete p;
+		delete refptr;
+	}
 }
 
 #endif
