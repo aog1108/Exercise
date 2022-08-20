@@ -2,13 +2,13 @@
 
 std::istream& operator>>(std::istream& is, Str& s)
 {
-	s.data.clear();
+	s.data->clear();
 	char c;
 
 	while (is.get(c) && isspace(c));
 
 	if (is) {
-		do s.data.push_back(c);
+		do s.data->push_back(c);
 		while (is.get(c) && !isspace(c));
 
 		if (is)

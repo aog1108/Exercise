@@ -1,5 +1,4 @@
-#ifndef GUARD_Vec_H
-#define GUARD_Vec_H
+#pragma once
 
 #include <cstddef>
 #include <memory>
@@ -127,5 +126,3 @@ template <class T> void Vec<T>::clear()
 			alloc.destroy(--avail);
 	}
 }
-
-#endif

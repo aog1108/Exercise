@@ -1,5 +1,4 @@
-#ifndef GUARD_Handle_H
-#define GUARD_Handle_H
+#pragma once
 
 #include <stdexcept>
 #include "Vec.h"
@@ -164,9 +163,4 @@ template <class T> T* clone(const T* tp)
 	return tp->clone();
 }
 
-template<> Vec<char>* clone(const Vec<char>* vp)
-{
-	return new Vec<char>(*vp);
-}
-
-#endif
+template <> Vec<char>* clone(const Vec<char>*);

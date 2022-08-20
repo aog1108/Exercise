@@ -1,5 +1,4 @@
-#ifndef GUARD_Student_info_h
-#define GUARD_Student_info_h
+#pragma once
 
 #include <string>
 #include <vector>
@@ -69,5 +68,3 @@ bool compare_grades(const Core&, const Core&);
 bool compare_Core_handles(const Handle<Core>&, const Handle<Core>&);
 
 std::istream& read_hw(std::istream&, std::vector<double>&);
-
-#endif
